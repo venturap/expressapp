@@ -1,7 +1,6 @@
 {
   "name": "expressapp",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
@@ -14,5 +13,14 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/venturap/expressapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/venturap/expressapp/issues"
+  },
+  "homepage": "https://github.com/venturap/expressapp#readme",
+  "description": ""
 }
