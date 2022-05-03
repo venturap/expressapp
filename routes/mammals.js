@@ -2,7 +2,7 @@ const express = require("express");
 const mongoClient = require("mongodb").MongoClient;
 
 const router = express.Router();
-const allAnimals = (req, res) => {
+const allMammals = (req, res) => {
     mongoClient.connect("mongodb://localhost:27017", (err, client) => {
       if (err) throw err;
       const db = client.db("animals");
@@ -17,7 +17,7 @@ const allAnimals = (req, res) => {
         });
     });
 };
-const getAnimal = (req, res) => {
+const getMammal = (req, res) => {
     mongoClient.connect("mongodb://localhost:27017", (err, client) => {
       if (err) throw err;
       const db = client.db("animals");
@@ -31,7 +31,7 @@ const getAnimal = (req, res) => {
         });
     });
 };
-const createAnimal = async (req, res) => {
+const createMammal = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
     const count = await db.collection("mammals").countDocuments();
@@ -40,7 +40,7 @@ const createAnimal = async (req, res) => {
     res.status(201).json([result, req.body, {"totalDocuments": count + 1}]);
     client.close();
 };
-const deleteAnimal = async (req, res) => {
+const deleteMammal = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
     const result = await db.collection("mammals")
@@ -53,7 +53,7 @@ const deleteAnimal = async (req, res) => {
       res.status(204).json();
     }
 };
-const updateAnimal = async (req, res) => {
+const updateMammal = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
     const result = await db.collection("mammals").updateOne(
@@ -67,13 +67,13 @@ const updateAnimal = async (req, res) => {
 
 router
     .route("/")
-    .get(allAnimals)
-    .post(createAnimal);
+    .get(allMammals)
+    .post(createMammal);
 
 router
     .route("/:id")
-    .get(getAnimal)
-    .delete(deleteAnimal)
-    .patch(updateAnimal);
+    .get(getMammal)
+    .delete(deleteMammal)
+    .patch(updateMammal);
 
 module.exports = router;
