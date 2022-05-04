@@ -1,13 +1,11 @@
-const express = require("express");
 const mongoClient = require("mongodb").MongoClient;
 
-const router = express.Router();
-const allMammals = (req, res) => {
+exports.allInsects = (req, res) => {
     mongoClient.connect("mongodb://localhost:27017", (err, client) => {
       if (err) throw err;
       const db = client.db("animals");
       console.log(req.params);
-      db.collection("mammals")
+      db.collection("insects")
         .find()
         .toArray((err, result) => {
           if (err) throw err;
@@ -17,12 +15,12 @@ const allMammals = (req, res) => {
         });
     });
 };
-const getMammal = (req, res) => {
+exports.getInsect = (req, res) => {
     mongoClient.connect("mongodb://localhost:27017", (err, client) => {
       if (err) throw err;
       const db = client.db("animals");
       console.log(req.params.id);
-      db.collection("mammals")
+      db.collection("insects")
         .find({ _id: req.params.id * 1 })
         .toArray((err, result) => {
           if (err) throw err;
@@ -31,19 +29,19 @@ const getMammal = (req, res) => {
         });
     });
 };
-const createMammal = async (req, res) => {
+exports.createInsect = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
-    const count = await db.collection("mammals").countDocuments();
+    const count = await db.collection("insects").countDocuments();
     req.body._id = count + 1;
-    const result = await db.collection("mammals").insertOne(req.body);
+    const result = await db.collection("insects").insertOne(req.body);
     res.status(201).json([result, req.body, {"totalDocuments": count + 1}]);
     client.close();
 };
-const deleteMammal = async (req, res) => {
+exports.deleteInsect = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
-    const result = await db.collection("mammals")
+    const result = await db.collection("insects")
     .deleteOne({ _id: req.params.id * 1 });
     if(result.deletedCount === 0) {
       res.status(404).json({"error": "Animal not found"});
@@ -53,10 +51,10 @@ const deleteMammal = async (req, res) => {
       res.status(204).json();
     }
 };
-const updateMammal = async (req, res) => {
+exports.updateInsect = async (req, res) => {
     const client = await mongoClient.connect("mongodb://localhost:27017");
     const db = client.db("animals");
-    const result = await db.collection("mammals").updateOne(
+    const result = await db.collection("insects").updateOne(
       { _id: req.params.id * 1 },
       { $set: req.body }
     );
@@ -64,16 +62,3 @@ const updateMammal = async (req, res) => {
     client.close();
   
 };
-
-router
-    .route("/")
-    .get(allMammals)
-    .post(createMammal);
-
-router
-    .route("/:id")
-    .get(getMammal)
-    .delete(deleteMammal)
-    .patch(updateMammal);
-
-module.exports = router;
